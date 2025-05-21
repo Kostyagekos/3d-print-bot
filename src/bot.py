@@ -101,9 +101,9 @@ def render_model_screenshot(model_path, output_path):
     try:
         subprocess.run(["node", "render.js", model_path, output_path], check=True, timeout=30)
     except subprocess.TimeoutExpired:
-        raise RuntimeError("Rendering timed out")
+        raise RuntimeError("Рендеринг превысил время ожидания")
     except Exception as e:
-        raise RuntimeError(f"Failed to render screenshot: {e}")
+        raise RuntimeError(f"Ошибка рендеринга: {e}")
 
 def process_step_iges(file_path, extension):
     try:
@@ -132,7 +132,7 @@ def process_step_iges(file_path, extension):
 
         return volume, stl_path
     except Exception as e:
-        raise RuntimeError(f"STEP/IGES processing error: {e}")
+        raise RuntimeError(f"Ошибка обработки STEP/IGES: {e}")
 
 async def process_model(model_path, extension):
     loop = asyncio.get_running_loop()
@@ -140,7 +140,7 @@ async def process_model(model_path, extension):
         if extension in ['stl', 'obj']:
             mesh = await loop.run_in_executor(executor, lambda: trimesh.load(model_path, force='mesh'))
             if not isinstance(mesh, trimesh.Trimesh):
-                raise ValueError("Not a valid mesh")
+                raise ValueError("Недопустимая mesh-геометрия")
             if len(mesh.faces) > 10000:
                 mesh = mesh.simplify_quadratic_decimation(len(mesh.faces) // 2)
             volume = mesh.volume / 1000
@@ -149,9 +149,9 @@ async def process_model(model_path, extension):
             volume, stl_path = await loop.run_in_executor(executor, lambda: process_step_iges(model_path, extension))
             return volume, stl_path
         else:
-            raise ValueError("Unsupported format")
+            raise ValueError("Неподдерживаемый формат")
     except Exception as e:
-        raise RuntimeError(f"Model processing error: {e}")
+        raise RuntimeError(f"Ошибка обработки модели: {e}")
 
 @dp.message(F.text == "/start")
 async def cmd_start(message: Message):
