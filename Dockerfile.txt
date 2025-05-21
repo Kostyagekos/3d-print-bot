@@ -1,0 +1,21 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies for pythonocc-core
+RUN apt-get update && apt-get install -y \
+    libocct-*-7.8 \
+    libocct-data-exchange-7.8 \
+    libocct-visualization-7.8 \
+    nodejs \
+    npm \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+RUN npm install three three-stdlib
+
+EXPOSE 10000
+CMD ["python", "-m", "src.bot"]
