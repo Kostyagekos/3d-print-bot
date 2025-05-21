@@ -1,0 +1,11 @@
+node_modules
+dist
+.env
+temp/
+__pycache__/
+*.pyc
+*.png
+*.stl
+*.obj
+*.step
+*.iges
