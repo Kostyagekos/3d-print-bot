@@ -2,11 +2,14 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system dependencies for pythonocc-core
+# Установка системных зависимостей для pythonocc-core и рендеринга
 RUN apt-get update && apt-get install -y \
-    libocct-*-7.8 \
-    libocct-data-exchange-7.8 \
-    libocct-visualization-7.8 \
+    build-essential \
+    libgl1-mesa-glx \
+    libglu1-mesa \
+    libx11-dev \
+    libxi-dev \
+    libxmu-dev \
     nodejs \
     npm \
     && rm -rf /var/lib/apt/lists/*
