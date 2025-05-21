@@ -1,11 +1,38 @@
+# Зависимости
 node_modules
 dist
+
+# Конфиденциальные файлы
 .env
+
+# Временные файлы
 temp/
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 *.png
 *.stl
 *.obj
 *.step
 *.iges
+
+# Логи и кэш
+*.log
+.pytest_cache/
+.coverage
+*.cache
+
+# IDE и редакторы
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Docker
+Dockerfile.lock
+*.dockerignore
+
+# Другое
+*.DS_Store
+*.zip
